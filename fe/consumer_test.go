@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestConsumer(t *testing.T) {
+func TestGatewayConsumer(t *testing.T) {
 	pact := dsl.Pact{
 		Consumer: "fe_service",
 		Provider: "gateway_service",

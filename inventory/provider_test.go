@@ -17,7 +17,7 @@ func TestPactProvider(t *testing.T) {
 	go runService(port)
 
 	pact := dsl.Pact{
-		Provider: "gateway_service",
+		Provider: "inventory_service",
 	}
 
 	// Verify the Provider - Tag-based Published Pacts for any known consumers
