@@ -7,28 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Product struct {
-	Name string `json:"name"`
-}
-
-type Inventory struct {
-	Stock int32 `json:"stock"`
-}
-
-func callProductService(url string) Product {
-	var jsonResp Product
-	common.CallService(url, &jsonResp)
-
-	return jsonResp
-}
-
-func callInventoryService(url string) Inventory {
-	var jsonResp Inventory
-	common.CallService(url, &jsonResp)
-
-	return jsonResp
-}
-
 func main() {
 	r := gin.Default()
 
@@ -50,4 +28,26 @@ func main() {
 	})
 
 	r.Run("0.0.0.0:8081")
+}
+
+type Product struct {
+	Name string `json:"name"`
+}
+
+type Inventory struct {
+	Stock int32 `json:"stock"`
+}
+
+func callProductService(url string) Product {
+	var jsonResp Product
+	common.CallService(url, &jsonResp)
+
+	return jsonResp
+}
+
+func callInventoryService(url string) Inventory {
+	var jsonResp Inventory
+	common.CallService(url, &jsonResp)
+
+	return jsonResp
 }
