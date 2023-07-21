@@ -12,13 +12,13 @@ func main() {
 
 	r.GET("/", func(c *gin.Context) {
 		gatewayServiceURL := "http://localhost:8081"
-		jsonResp := callGatewayService(gatewayServiceURL)
+		resp := callGatewayService(gatewayServiceURL)
 
 		c.JSON(http.StatusOK, gin.H{
 			"gateway_service_url": gatewayServiceURL,
 			"product": gin.H{
-				"name":  jsonResp.Product.Name,
-				"stock": jsonResp.Product.Stock,
+				"name":  resp.Product.Name,
+				"stock": resp.Product.Stock,
 			},
 		})
 	})
