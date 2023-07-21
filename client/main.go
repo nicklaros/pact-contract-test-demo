@@ -1,9 +1,8 @@
 package main
 
 import (
-	"encoding/json"
-	"io"
 	"net/http"
+	"pact-contract-test-demo/common"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,17 +18,19 @@ type Product struct {
 	Stock int32  `json:"stock"`
 }
 
+func callGatewayService(url string) Resp {
+	var jsonResp Resp
+	common.CallService(url, &jsonResp)
+
+	return jsonResp
+}
+
 func main() {
 	r := gin.Default()
 
 	r.GET("/", func(c *gin.Context) {
 		gatewayServiceURL := "http://localhost:8081"
-
-		var jsonResp Resp
-		resp, _ := http.Get(gatewayServiceURL)
-		body, _ := io.ReadAll(resp.Body)
-		json.Unmarshal(body, &jsonResp)
-		resp.Body.Close()
+		jsonResp := callGatewayService(gatewayServiceURL)
 
 		c.JSON(http.StatusOK, gin.H{
 			"gateway_service_url": gatewayServiceURL,

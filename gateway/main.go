@@ -1,9 +1,8 @@
 package main
 
 import (
-	"encoding/json"
-	"io"
 	"net/http"
+	"pact-contract-test-demo/common"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,31 +15,36 @@ type Inventory struct {
 	Stock int32 `json:"stock"`
 }
 
+func callProductService(url string) Product {
+	var jsonResp Product
+	common.CallService(url, &jsonResp)
+
+	return jsonResp
+}
+
+func callInventoryService(url string) Inventory {
+	var jsonResp Inventory
+	common.CallService(url, &jsonResp)
+
+	return jsonResp
+}
+
 func main() {
 	r := gin.Default()
 
 	r.GET("/", func(c *gin.Context) {
 		productServiceURL := "http://localhost:8082"
+		product := callProductService(productServiceURL)
+
 		inventoryServiceURL := "http://localhost:8083"
-
-		var productJsonResp Product
-		resp, _ := http.Get(productServiceURL)
-		body, _ := io.ReadAll(resp.Body)
-		json.Unmarshal(body, &productJsonResp)
-		resp.Body.Close()
-
-		var inventoryJsonResp Inventory
-		resp, _ = http.Get(inventoryServiceURL)
-		body, _ = io.ReadAll(resp.Body)
-		json.Unmarshal(body, &inventoryJsonResp)
-		resp.Body.Close()
+		inventory := callInventoryService(inventoryServiceURL)
 
 		c.JSON(http.StatusOK, gin.H{
 			"product_service_url":   productServiceURL,
 			"inventory_service_url": inventoryServiceURL,
 			"product": gin.H{
-				"name":  productJsonResp.Name,
-				"stock": inventoryJsonResp.Stock,
+				"name":  product.Name,
+				"stock": inventory.Stock,
 			},
 		})
 	})
