@@ -24,13 +24,18 @@ func TestPactProvider(t *testing.T) {
 	_, err := pact.VerifyProvider(t, types.VerifyRequest{
 		ProviderBaseURL: fmt.Sprintf("http://localhost:%d", port),
 		PactURLs: []string{
+			// Hard coded for simplicity, in real scenario it is usually fetched from pact-broker.
 			filepath.FromSlash("../fe/pacts/fe_service-gateway_service.json"),
 		},
 		ProviderVersion: "1.0.0",
 		PactLogDir:      "./logs",
+		StateHandlers:   types.StateHandlers{
+			// TODO: add state handler example.
+			// "Product BEST exists": ...
+		},
 	})
 
 	if err != nil {
-		t.Logf("verify provider: %s", err)
+		t.Logf("verify provider.: %s", err)
 	}
 }

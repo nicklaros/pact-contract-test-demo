@@ -18,6 +18,7 @@ func TestGatewayConsumer(t *testing.T) {
 
 	url := fmt.Sprintf("http://localhost:%d", pact.Server.Port)
 
+	// TODO: add multiple interaction, eg: when querying product that does not exists.
 	pact.
 		AddInteraction().
 		Given("Product BEST exists").

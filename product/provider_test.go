@@ -24,6 +24,7 @@ func TestPactProvider(t *testing.T) {
 	_, err := pact.VerifyProvider(t, types.VerifyRequest{
 		ProviderBaseURL: fmt.Sprintf("http://localhost:%d", port),
 		PactURLs: []string{
+			// Hard coded for simplicity, in real scenario it is usually fetched from pact-broker.
 			filepath.FromSlash("../gateway/pacts/gateway_service-product_service.json"),
 		},
 		ProviderVersion: "1.0.0",
