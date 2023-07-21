@@ -1,12 +1,17 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	runService(8083)
+}
+
+func runService(port int) {
 	r := gin.Default()
 
 	r.GET("/", func(c *gin.Context) {
@@ -15,5 +20,5 @@ func main() {
 		})
 	})
 
-	r.Run("0.0.0.0:8083")
+	r.Run(fmt.Sprintf("0.0.0.0:%d", port))
 }
