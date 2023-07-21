@@ -1,0 +1,36 @@
+{
+  "consumer": {
+    "name": "fe_service"
+  },
+  "provider": {
+    "name": "gateway_service"
+  },
+  "interactions": [
+    {
+      "description": "A request to get product",
+      "providerState": "Product BEST exists",
+      "request": {
+        "method": "GET",
+        "path": "/"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "inventory_service_url": "http://localhost:8083",
+          "product": {
+            "name": "The Best Product in The World",
+            "stock": 87
+          },
+          "product_service_url": "http://localhost:8082"
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}

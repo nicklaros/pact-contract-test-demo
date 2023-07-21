@@ -1,0 +1,31 @@
+{
+  "consumer": {
+    "name": "gateway_service"
+  },
+  "provider": {
+    "name": "inventory_service"
+  },
+  "interactions": [
+    {
+      "description": "A request to get inventory",
+      "providerState": "Inventory BEST exists",
+      "request": {
+        "method": "GET",
+        "path": "/"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "stock": 87
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}

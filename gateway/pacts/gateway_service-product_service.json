@@ -1,0 +1,31 @@
+{
+  "consumer": {
+    "name": "gateway_service"
+  },
+  "provider": {
+    "name": "product_service"
+  },
+  "interactions": [
+    {
+      "description": "A request to get product",
+      "providerState": "Product BEST exists",
+      "request": {
+        "method": "GET",
+        "path": "/"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        },
+        "body": {
+          "name": "The Best Product in The World"
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
