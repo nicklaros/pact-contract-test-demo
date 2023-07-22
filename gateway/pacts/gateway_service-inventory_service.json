@@ -8,7 +8,7 @@
   "interactions": [
     {
       "description": "A request to get inventory",
-      "providerState": "Inventory BEST exists",
+      "providerState": "Inventory with product id `TEST_EXISTING_PRODUCT` exists",
       "request": {
         "method": "GET",
         "path": "/"

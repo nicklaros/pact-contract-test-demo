@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"net/http"
+
 	"pact-contract-test-demo/common"
+	"pact-contract-test-demo/common/errors"
 
 	"github.com/gin-gonic/gin"
 )
@@ -32,9 +34,10 @@ func runService(port int) {
 }
 
 type Resp struct {
-	ProductServiceURL   string  `json:"product_service_url"`
-	InventoryServiceURL string  `json:"inventory_service_url"`
-	Product             Product `json:"product"`
+	ProductServiceURL   string        `json:"product_service_url"`
+	InventoryServiceURL string        `json:"inventory_service_url"`
+	Product             *Product      `json:"product"`
+	Error               *errors.Error `json:"error"`
 }
 
 type Product struct {

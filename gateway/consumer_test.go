@@ -18,33 +18,8 @@ func TestProductConsumer(t *testing.T) {
 
 	url := fmt.Sprintf("http://localhost:%d", pact.Server.Port)
 
-	pact.
-		AddInteraction().
-		Given("Product BEST exists").
-		UponReceiving("A request to get product").
-		WithRequest(dsl.Request{
-			Method: "GET",
-			Path:   dsl.String("/"),
-		}).
-		WillRespondWith(dsl.Response{
-			Status: 200,
-			Body: dsl.StructMatcher{
-				"name": "The Best Product in The World",
-			},
-		})
-
-	err := pact.Verify(func() error {
-		resp := callProductService(url)
-
-		assert.Equal(t, Product{
-			Name: "The Best Product in The World",
-		}, resp)
-
-		return nil
-	})
-
-	if err != nil {
-		t.Fatalf("Error on Verify: %v", err)
+	for _, testCase := range productTestCases {
+		testCase(t, pact, url)
 	}
 
 	pact.Teardown()
@@ -60,9 +35,51 @@ func TestInventoryConsumer(t *testing.T) {
 
 	url := fmt.Sprintf("http://localhost:%d", pact.Server.Port)
 
+	for _, testCase := range inventoryTestCases {
+		testCase(t, pact, url)
+	}
+
+	pact.Teardown()
+}
+
+func getExistingProduct(t *testing.T, pact dsl.Pact, url string) {
 	pact.
 		AddInteraction().
-		Given("Inventory BEST exists").
+		Given("Product with id `TEST_EXISTING_PRODUCT` exists").
+		UponReceiving("A request to get product with id `TEST_EXISTING_PRODUCT`").
+		WithRequest(dsl.Request{
+			Method: "GET",
+			Path:   dsl.String("/"),
+			Query: dsl.MapMatcher{
+				"id": dsl.String("TEST_EXISTING_PRODUCT"),
+			},
+		}).
+		WillRespondWith(dsl.Response{
+			Status: 200,
+			Body: dsl.StructMatcher{
+				"name": "The existing product with a wonderful name",
+			},
+		})
+
+	err := pact.Verify(func() error {
+		resp := callProductService(url, "TEST_EXISTING_PRODUCT")
+
+		assert.Equal(t, &Product{
+			Name: "The existing product with a wonderful name",
+		}, resp)
+
+		return nil
+	})
+
+	if err != nil {
+		t.Fatalf("Error on Verify: %v", err)
+	}
+}
+
+func getExistingInventory(t *testing.T, pact dsl.Pact, url string) {
+	pact.
+		AddInteraction().
+		Given("Inventory with product id `TEST_EXISTING_PRODUCT` exists").
 		UponReceiving("A request to get inventory").
 		WithRequest(dsl.Request{
 			Method: "GET",
@@ -76,9 +93,9 @@ func TestInventoryConsumer(t *testing.T) {
 		})
 
 	err := pact.Verify(func() error {
-		resp := callInventoryService(url)
+		resp := callInventoryService(url, "TEST_EXISTING_PRODUCT")
 
-		assert.Equal(t, Inventory{
+		assert.Equal(t, &Inventory{
 			Stock: 87,
 		}, resp)
 
@@ -88,6 +105,14 @@ func TestInventoryConsumer(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error on Verify: %v", err)
 	}
+}
 
-	pact.Teardown()
+type CaseFn func(t *testing.T, pact dsl.Pact, url string)
+
+var productTestCases = []CaseFn{
+	getExistingProduct,
+}
+
+var inventoryTestCases = []CaseFn{
+	getExistingInventory,
 }

@@ -20,7 +20,6 @@ func TestPactProvider(t *testing.T) {
 		Provider: "inventory_service",
 	}
 
-	// Verify the Provider - Tag-based Published Pacts for any known consumers
 	_, err := pact.VerifyProvider(t, types.VerifyRequest{
 		ProviderBaseURL: fmt.Sprintf("http://localhost:%d", port),
 		PactURLs: []string{

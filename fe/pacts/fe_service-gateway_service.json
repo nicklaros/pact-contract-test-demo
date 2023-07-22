@@ -7,22 +7,45 @@
   },
   "interactions": [
     {
-      "description": "A request to get product",
-      "providerState": "Product BEST exists",
+      "description": "A request to get product with id `TEST_EXISTING_PRODUCT`",
       "request": {
         "method": "GET",
-        "path": "/"
+        "path": "/",
+        "query": "id=TEST_EXISTING_PRODUCT"
       },
       "response": {
         "status": 200,
         "headers": {
         },
         "body": {
+          "error": null,
           "inventory_service_url": "http://localhost:8083",
           "product": {
-            "name": "The Best Product in The World",
+            "name": "The existing product with a wonderful name",
             "stock": 87
           },
+          "product_service_url": "http://localhost:8082"
+        }
+      }
+    },
+    {
+      "description": "A request to get product with id `TEST_NONEXISTING_PRODUCT`",
+      "request": {
+        "method": "GET",
+        "path": "/",
+        "query": "id=TEST_NONEXISTING_PRODUCT"
+      },
+      "response": {
+        "status": 404,
+        "headers": {
+        },
+        "body": {
+          "error": {
+            "code": "C001",
+            "message": "product not found"
+          },
+          "inventory_service_url": "http://localhost:8083",
+          "product": null,
           "product_service_url": "http://localhost:8082"
         }
       }

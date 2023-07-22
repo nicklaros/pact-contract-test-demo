@@ -54,8 +54,7 @@ func getServiceHost() string {
 func getPactBrokerHost() string {
 	url := os.Getenv("PACT_BROKER_URL")
 	if url == "" {
-		// TODO: change to http://localhost:9292 for default value when devops done adding PACT_BROKER_URL env variable in wakanda pipeline
-		url = "https://pact.srcli.xyz.dmmy.me"
+		url = "http://localhost:9292"
 	}
 
 	return url

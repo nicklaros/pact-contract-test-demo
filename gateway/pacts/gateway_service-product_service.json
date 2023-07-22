@@ -7,18 +7,19 @@
   },
   "interactions": [
     {
-      "description": "A request to get product",
-      "providerState": "Product BEST exists",
+      "description": "A request to get product with id `TEST_EXISTING_PRODUCT`",
+      "providerState": "Product with id `TEST_EXISTING_PRODUCT` exists",
       "request": {
         "method": "GET",
-        "path": "/"
+        "path": "/",
+        "query": "id=TEST_EXISTING_PRODUCT"
       },
       "response": {
         "status": 200,
         "headers": {
         },
         "body": {
-          "name": "The Best Product in The World"
+          "name": "The existing product with a wonderful name"
         }
       }
     }

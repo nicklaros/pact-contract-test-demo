@@ -20,7 +20,6 @@ func TestPactProvider(t *testing.T) {
 		Provider: "gateway_service",
 	}
 
-	// Verify the Provider - Tag-based Published Pacts for any known consumers
 	_, err := pact.VerifyProvider(t, types.VerifyRequest{
 		ProviderBaseURL: fmt.Sprintf("http://localhost:%d", port),
 		PactURLs: []string{
@@ -29,10 +28,6 @@ func TestPactProvider(t *testing.T) {
 		},
 		ProviderVersion: "1.0.0",
 		PactLogDir:      "./logs",
-		StateHandlers:   types.StateHandlers{
-			// TODO: add state handler example.
-			// "Product BEST exists": ...
-		},
 	})
 
 	if err != nil {
