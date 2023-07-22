@@ -47,3 +47,7 @@ func addProduct(id string, name string) {
 		Name: name,
 	}
 }
+
+func deleteProduct(id string) {
+	productById[id] = nil
+}

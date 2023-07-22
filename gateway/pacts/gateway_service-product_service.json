@@ -22,6 +22,20 @@
           "name": "The existing product with a wonderful name"
         }
       }
+    },
+    {
+      "description": "A request to get product with id `TEST_NONEXISTING_PRODUCT`",
+      "providerState": "Product with id `TEST_NONEXISTING_PRODUCT` does not exists",
+      "request": {
+        "method": "GET",
+        "path": "/",
+        "query": "id=TEST_NONEXISTING_PRODUCT"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+        }
+      }
     }
   ],
   "metadata": {

@@ -76,6 +76,36 @@ func getExistingProduct(t *testing.T, pact dsl.Pact, url string) {
 	}
 }
 
+func getNonExistingProduct(t *testing.T, pact dsl.Pact, url string) {
+	pact.
+		AddInteraction().
+		Given("Product with id `TEST_NONEXISTING_PRODUCT` does not exists").
+		UponReceiving("A request to get product with id `TEST_NONEXISTING_PRODUCT`").
+		WithRequest(dsl.Request{
+			Method: "GET",
+			Path:   dsl.String("/"),
+			Query: dsl.MapMatcher{
+				"id": dsl.String("TEST_NONEXISTING_PRODUCT"),
+			},
+		}).
+		WillRespondWith(dsl.Response{
+			Status: 200,
+			Body:   nil,
+		})
+
+	err := pact.Verify(func() error {
+		resp := callProductService(url, "TEST_NONEXISTING_PRODUCT")
+
+		assert.Nil(t, resp)
+
+		return nil
+	})
+
+	if err != nil {
+		t.Fatalf("Error on Verify: %v", err)
+	}
+}
+
 func getExistingInventory(t *testing.T, pact dsl.Pact, url string) {
 	pact.
 		AddInteraction().
@@ -111,6 +141,7 @@ type CaseFn func(t *testing.T, pact dsl.Pact, url string)
 
 var productTestCases = []CaseFn{
 	getExistingProduct,
+	getNonExistingProduct,
 }
 
 var inventoryTestCases = []CaseFn{

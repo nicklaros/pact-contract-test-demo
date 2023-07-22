@@ -34,6 +34,11 @@ func TestPactProvider(t *testing.T) {
 
 				return nil
 			},
+			"Product with id `TEST_NONEXISTING_PRODUCT` does not exists": func() error {
+				deleteProduct("TEST_NONEXISTING_PRODUCT")
+
+				return nil
+			},
 		},
 	})
 

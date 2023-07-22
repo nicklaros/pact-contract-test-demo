@@ -28,6 +28,13 @@ func TestPactProvider(t *testing.T) {
 		},
 		ProviderVersion: "1.0.0",
 		PactLogDir:      "./logs",
+		StateHandlers: types.StateHandlers{
+			"Inventory with product id `TEST_EXISTING_PRODUCT` exists": func() error {
+				addInventory("TEST_EXISTING_PRODUCT", 101)
+
+				return nil
+			},
+		},
 	})
 
 	if err != nil {
