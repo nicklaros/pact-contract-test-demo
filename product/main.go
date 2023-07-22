@@ -15,7 +15,7 @@ func runService(port int) {
 	r := gin.Default()
 
 	r.GET("/", func(c *gin.Context) {
-		id := c.Query("id")
+		id := c.DefaultQuery("id", "BEST")
 
 		product := productById[id]
 

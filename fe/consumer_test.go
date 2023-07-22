@@ -52,7 +52,7 @@ func getExistingProduct(t *testing.T, pact dsl.Pact, url string) {
 		})
 
 	err := pact.Verify(func() error {
-		resp := callGatewayService(url + "/?id=TEST_EXISTING_PRODUCT")
+		resp := callGatewayService(url, "TEST_EXISTING_PRODUCT")
 
 		assert.Equal(t, Resp{
 			ProductServiceURL:   "http://localhost:8082",
@@ -97,7 +97,7 @@ func getNonExistingProduct(t *testing.T, pact dsl.Pact, url string) {
 		})
 
 	err := pact.Verify(func() error {
-		resp := callGatewayService(url + "/?id=TEST_NONEXISTING_PRODUCT")
+		resp := callGatewayService(url, "TEST_NONEXISTING_PRODUCT")
 
 		assert.Equal(t, Resp{
 			ProductServiceURL:   "http://localhost:8082",

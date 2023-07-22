@@ -18,8 +18,10 @@ func runService(port int) {
 	r := gin.Default()
 
 	r.GET("/", func(c *gin.Context) {
+		id := c.DefaultQuery("id", "BEST")
+
 		gatewayServiceURL := "http://localhost:8081"
-		resp := callGatewayService(gatewayServiceURL)
+		resp := callGatewayService(gatewayServiceURL, id)
 
 		c.JSON(http.StatusOK, gin.H{
 			"gateway_service_url": gatewayServiceURL,
@@ -45,9 +47,9 @@ type Product struct {
 	Stock int32  `json:"stock"`
 }
 
-func callGatewayService(url string) Resp {
+func callGatewayService(url string, productId string) Resp {
 	var jsonResp Resp
-	common.CallService(url, &jsonResp)
+	common.CallService(fmt.Sprintf("%s/?id=%s", url, productId), &jsonResp)
 
 	return jsonResp
 }

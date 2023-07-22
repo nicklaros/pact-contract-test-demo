@@ -16,7 +16,7 @@ func runService(port int) {
 	r := gin.Default()
 
 	r.GET("/", func(c *gin.Context) {
-		id := c.Query("id")
+		id := c.DefaultQuery("id", "BEST")
 
 		productServiceURL := "http://localhost:8082"
 		inventoryServiceURL := "http://localhost:8083"
