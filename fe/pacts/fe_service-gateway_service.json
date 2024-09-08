@@ -2,30 +2,26 @@
   "consumer": {
     "name": "fe_service"
   },
-  "provider": {
-    "name": "gateway_service"
-  },
   "interactions": [
     {
       "description": "A request to get product with id `TEST_EXISTING_PRODUCT`",
       "request": {
         "method": "GET",
         "path": "/",
-        "query": "id=TEST_EXISTING_PRODUCT"
+        "query": "id=TEST%5fEXISTING%5fPRODUCT"
       },
       "response": {
-        "status": 200,
-        "headers": {
-        },
         "body": {
           "error": null,
-          "inventory_service_url": "http://localhost:8083",
           "product": {
             "name": "The existing product with a wonderful name",
-            "stock": 87
-          },
-          "product_service_url": "http://localhost:8082"
-        }
+            "stock": 101
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
       }
     },
     {
@@ -33,27 +29,34 @@
       "request": {
         "method": "GET",
         "path": "/",
-        "query": "id=TEST_NONEXISTING_PRODUCT"
+        "query": "id=TEST%5fNONEXISTING%5fPRODUCT"
       },
       "response": {
-        "status": 404,
-        "headers": {
-        },
         "body": {
           "error": {
             "code": "C001",
             "message": "product not found"
           },
-          "inventory_service_url": "http://localhost:8083",
-          "product": null,
-          "product_service_url": "http://localhost:8082"
-        }
+          "product": null
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 404
       }
     }
   ],
   "metadata": {
+    "pactRust": {
+      "ffi": "0.4.23",
+      "mockserver": "1.2.10",
+      "models": "1.2.5"
+    },
     "pactSpecification": {
       "version": "2.0.0"
     }
+  },
+  "provider": {
+    "name": "gateway_service"
   }
 }

@@ -10,8 +10,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var gatewayServiceBaseURL = "http://localhost:8081" // adjust port if needed
+
 func main() {
-	runService(8080)
+	runService(common.GetPortFromEnvVar(8080))
 }
 
 func runService(port int) {
@@ -20,11 +22,10 @@ func runService(port int) {
 	r.GET("/", func(c *gin.Context) {
 		id := c.DefaultQuery("id", "BEST")
 
-		gatewayServiceURL := "http://localhost:8081"
-		resp := callGatewayService(gatewayServiceURL, id)
+		resp := callGatewayService(gatewayServiceBaseURL, id)
 
 		c.JSON(http.StatusOK, gin.H{
-			"gateway_service_url": gatewayServiceURL,
+			"gateway_service_url": gatewayServiceBaseURL,
 			"product": gin.H{
 				"name":  resp.Product.Name,
 				"stock": resp.Product.Stock,

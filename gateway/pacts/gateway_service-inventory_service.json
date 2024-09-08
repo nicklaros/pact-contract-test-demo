@@ -2,30 +2,37 @@
   "consumer": {
     "name": "gateway_service"
   },
-  "provider": {
-    "name": "inventory_service"
-  },
   "interactions": [
     {
       "description": "A request to get inventory",
       "providerState": "Inventory with product id `TEST_EXISTING_PRODUCT` exists",
       "request": {
         "method": "GET",
-        "path": "/"
+        "path": "/",
+        "query": "id=TEST%5fEXISTING%5fPRODUCT"
       },
       "response": {
-        "status": 200,
-        "headers": {
-        },
         "body": {
-          "stock": 87
-        }
+          "stock": 101
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
       }
     }
   ],
   "metadata": {
+    "pactRust": {
+      "ffi": "0.4.23",
+      "mockserver": "1.2.10",
+      "models": "1.2.5"
+    },
     "pactSpecification": {
       "version": "2.0.0"
     }
+  },
+  "provider": {
+    "name": "inventory_service"
   }
 }

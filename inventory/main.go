@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"net/http"
 
+	"pact-contract-test-demo/common"
+
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	runService(8083)
+	runService(common.GetPortFromEnvVar(8083))
 }
 
 func runService(port int) {
@@ -32,9 +34,6 @@ type Inventory struct {
 var inventoryByProductId = map[string]*Inventory{
 	"BEST": {
 		Stock: int32(87),
-	},
-	"TEST_EXISTING_PRODUCT": {
-		Stock: int32(101),
 	},
 }
 

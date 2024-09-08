@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"net/http"
 
+	"pact-contract-test-demo/common"
+
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	runService(8082)
+	runService(common.GetPortFromEnvVar(8082))
 }
 
 func runService(port int) {
@@ -19,7 +21,15 @@ func runService(port int) {
 
 		product := productById[id]
 
-		c.JSON(http.StatusOK, product)
+		if product != nil {
+			c.JSON(http.StatusOK, gin.H{
+				"product": product,
+			})
+		} else {
+			c.JSON(http.StatusNotFound, gin.H{
+				"product": nil,
+			})
+		}
 	})
 
 	r.Run(fmt.Sprintf("0.0.0.0:%d", port))
@@ -34,10 +44,6 @@ var productById = map[string]*Product{
 	"BEST": {
 		Id:   "BEST",
 		Name: "The Best Product in The World",
-	},
-	"TEST_EXISTING_PRODUCT": {
-		Id:   "TEST_EXISTING_PRODUCT",
-		Name: "The existing product with a wonderful name",
 	},
 }
 
