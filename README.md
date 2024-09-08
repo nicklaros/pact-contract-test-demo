@@ -10,25 +10,34 @@ fe service --> gateway service --
 
 The `fe` service ask product information to `gateway` service, which then fetch name of product from `product` service, and available stock from `inventory` service.
 
+# Prerequisite
+
+1. Make sure to run command `sudo pact-go -l DEBUG install` to download and install the required libraries.
+
 # Steps For Explaining The Demo
 
 1. Run all services using this commands.
    
    ```
-   // Run inventory service
-   go run inventory/main.go
-
-   // Run product service
-   go run product/main.go
+   // Run fe service
+   PORT=8080 go run fe/main.go
 
    // Run gateway service
-   go run gateway/main.go
+   PORT=8081 go run gateway/main.go
 
-   // Run fe service
-   go run fe/main.go
+   // Run inventory service
+   PORT=8082 go run inventory/main.go
+
+   // Run product service
+   PORT=8083 go run product/main.go
    ```
    
    Then, open `fe` service on http://localhost:8080, from there you can walk through the dependencies service via link provided in the response body.
+
+   If you use other port than above, make sure you adjust:
+   - `gatewayServiceBaseURL` variable in `fe/main.go`
+   - `productServiceBaseURL` variable in `gateway/main.go`
+   - `inventoryServiceBaseURL` variable in `gateway/main.go`
 
 2. In consumer driven contract testing, contracts is defined by consumer. Review consumer test files written on `fe` and `gateway` services, eg:
 
@@ -39,10 +48,10 @@ The `fe` service ask product information to `gateway` service, which then fetch 
 
    ```
    // Run consumer test on fe service
-   go test -run Consumer$ -count 1 pact-contract-test-demo/fe
+   go test -run Consumer$ -count 1 ./fe
    
    // Run consumer test on gateway service
-   go test -run Consumer$ -count 1 pact-contract-test-demo/gateway
+   go test -run Consumer$ -count 1 ./gateway
    ```
 
    Note that it will generate pact contract files that define API contract between consumer and provider, eg:
@@ -63,13 +72,13 @@ The `fe` service ask product information to `gateway` service, which then fetch 
 
    ```
    // Run verify provider test on gateway service
-   go test -run ^TestPactProvider$ -count 1 pact-contract-test-demo/gateway
+   go test -run ^TestPactProvider$ -count 1 ./gateway
    
    // Run verify provider test on product service
-   go test -run ^TestPactProvider$ -count 1 pact-contract-test-demo/product
+   go test -run ^TestPactProvider$ -count 1 ./product
    
    // Run verify provider test on inventory service
-   go test -run ^TestPactProvider$ -count 1 pact-contract-test-demo/inventory
+   go test -run ^TestPactProvider$ -count 1 ./inventory
    ```
 
 6. Up to this point, to successfully verify `gateway` service, you must first run both `product` service and `inventory` service, otherwise it will fails because `gateway` service need to fetch product name from `product` service and available stock from `inventory` service.
@@ -78,7 +87,7 @@ The `fe` service ask product information to `gateway` service, which then fetch 
    - Kill inventory service
    - Run verify gateway service
      ```
-     go test -run ^TestPactProvider$ -count 1 pact-contract-test-demo/gateway
+     go test -run ^TestPactProvider$ -count 1 ./gateway
      ```
 
    We can see the test is failing, which is expected. So we must run all dependency services to make it succeed. But it comes with a great cost, eg:
@@ -104,7 +113,7 @@ The `fe` service ask product information to `gateway` service, which then fetch 
    After that, all we have to do is run our verify provider test again.
 
    ```
-   go test -run ^TestPactProvider$ -count 1 pact-contract-test-demo/gateway
+   go test -run ^TestPactProvider$ -count 1 ./gateway
    ```
 
    Now our test will succeed without having to run the world. It also good to know that our stub services are guaranteed to represent behaviour of the real service, so you can test with confidence.

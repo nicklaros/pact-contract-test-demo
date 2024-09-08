@@ -2,9 +2,6 @@
   "consumer": {
     "name": "gateway_service"
   },
-  "provider": {
-    "name": "product_service"
-  },
   "interactions": [
     {
       "description": "A request to get product with id `TEST_EXISTING_PRODUCT`",
@@ -12,15 +9,18 @@
       "request": {
         "method": "GET",
         "path": "/",
-        "query": "id=TEST_EXISTING_PRODUCT"
+        "query": "id=TEST%5fEXISTING%5fPRODUCT"
       },
       "response": {
-        "status": 200,
-        "headers": {
-        },
         "body": {
-          "name": "The existing product with a wonderful name"
-        }
+          "product": {
+            "name": "The existing product with a wonderful name"
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "status": 200
       }
     },
     {
@@ -29,18 +29,30 @@
       "request": {
         "method": "GET",
         "path": "/",
-        "query": "id=TEST_NONEXISTING_PRODUCT"
+        "query": "id=TEST%5fNONEXISTING%5fPRODUCT"
       },
       "response": {
-        "status": 200,
+        "body": {
+          "product": null
+        },
         "headers": {
-        }
+          "Content-Type": "application/json"
+        },
+        "status": 404
       }
     }
   ],
   "metadata": {
+    "pactRust": {
+      "ffi": "0.4.23",
+      "mockserver": "1.2.10",
+      "models": "1.2.5"
+    },
     "pactSpecification": {
       "version": "2.0.0"
     }
+  },
+  "provider": {
+    "name": "product_service"
   }
 }
