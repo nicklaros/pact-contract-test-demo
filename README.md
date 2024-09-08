@@ -26,10 +26,10 @@ The `fe` service ask product information to `gateway` service, which then fetch 
    PORT=8081 go run gateway/main.go
 
    // Run inventory service
-   PORT=8083 go run inventory/main.go
+   PORT=8082 go run inventory/main.go
 
    // Run product service
-   PORT=8084 go run product/main.go
+   PORT=8083 go run product/main.go
    ```
    
    Then, open `fe` service on http://localhost:8080, from there you can walk through the dependencies service via link provided in the response body.
